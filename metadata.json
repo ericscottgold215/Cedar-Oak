@@ -1,0 +1,6 @@
+{
+  "name": "Cedar & Oak",
+  "description": "A curated cigar and beverage pairing guide featuring alcoholic and non-alcoholic matches, detailed flavor profiles, and community pairing ratings and reviews.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Cedar &amp; Oak</string>
+    <string name="brand_subtitle">SOMMELIER PAIRING GUIDE</string>
+    <string name="nav_pairings">Pairings</string>
+    <string name="nav_cigars">Cigars</string>
+    <string name="nav_drinks">Drinks</string>
+    <string name="nav_synergy">Synergy</string>
+    <string name="cd_back">Navigate back</string>
+    <string name="cd_lounge_hero">Luxury cedar table with a hand-rolled cigar, amber spirit, and espresso cup</string>
+    <string name="cd_cigar_wrappers">Artisanal cigars arranged by wrapper shade on Spanish cedar</string>
+    <string name="cd_pairing_drinks">Amber whiskey rocks glass beside dark espresso and spiced cold brew</string>
+    <string name="filter_all">All</string>
+    <string name="filter_alcoholic">Alcoholic</string>
+    <string name="filter_non_alcoholic">Zero-Proof</string>
+    <string name="label_rating_title">Community Rating &amp; Reviews</string>
+    <string name="label_rate_this_pairing">Rate This Pairing</string>
+    <string name="label_update_your_review">Update Your Review</string>
+    <string name="action_submit_review">Save Rating &amp; Review</string>
+    <string name="hint_review_notes">Share tasting impressions, draw balance, or finish notes (optional)</string>
+    <string name="hint_reviewer_name">Your display name</string>
+</resources>
