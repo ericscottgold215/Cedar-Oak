@@ -6,7 +6,8 @@ import com.example.model.BodyLevel
 import com.example.model.FlavorAxes
 
 object BeverageCatalogData {
-    val beverages: List<Beverage> = alcoholicBeverages() + nonAlcoholicBeverages()
+    val beverages: List<Beverage> =
+        alcoholicBeverages() + LiquorExpansionData.beverages + LiquorVaultExpansion.beverages + nonAlcoholicBeverages()
 
     private fun alcoholicBeverages(): List<Beverage> = listOf(
         // WHISKEY & SCOTCH

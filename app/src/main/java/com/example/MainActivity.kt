@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CompareArrows
+import androidx.compose.material.icons.filled.GraphicEq
 import androidx.compose.material.icons.filled.LocalBar
 import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.CompareArrows
+import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material.icons.outlined.LocalBar
 import androidx.compose.material.icons.outlined.Whatshot
 import androidx.compose.material3.Icon
@@ -53,6 +55,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.ai.configureAppCheck
 import com.example.data.catalog.PairingCatalog
 import com.example.model.PairingReview
 import com.example.ui.components.RatingComposerSheet
@@ -63,6 +66,7 @@ import com.example.ui.screens.DiscoverScreen
 import com.example.ui.screens.DrinksScreen
 import com.example.ui.screens.PairingDetailScreen
 import com.example.ui.screens.SynergyLabScreen
+import com.example.ui.screens.TranscribeScreen
 import com.example.ui.theme.CedarAndOakTheme
 import com.example.ui.viewmodel.PairingViewModel
 import kotlinx.coroutines.launch
@@ -72,6 +76,7 @@ private object AppRoutes {
     const val CIGARS = "cigars"
     const val DRINKS = "drinks"
     const val SYNERGY = "synergy"
+    const val TRANSCRIBE = "transcribe"
     const val CIGAR_DETAIL = "cigar/{cigarId}"
     const val BEVERAGE_DETAIL = "beverage/{beverageId}"
     const val PAIRING_DETAIL = "pairing/{cigarId}/{beverageId}"
@@ -113,6 +118,12 @@ private val TopLevelTabs = listOf(
         selectedIcon = Icons.Filled.CompareArrows,
         unselectedIcon = Icons.Outlined.CompareArrows,
     ),
+    TopLevelTab(
+        route = AppRoutes.TRANSCRIBE,
+        label = "Transcribe",
+        selectedIcon = Icons.Filled.GraphicEq,
+        unselectedIcon = Icons.Outlined.GraphicEq,
+    ),
 )
 
 private data class ActiveRateTarget(
@@ -124,6 +135,7 @@ private data class ActiveRateTarget(
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        configureAppCheck(this, intent)
         enableEdgeToEdge()
         setContent {
             val viewModel: PairingViewModel = viewModel()
@@ -328,6 +340,16 @@ private fun CedarAndOakApp(
                                     viewModel.deleteReview(reviewId)
                                     scope.launch {
                                         snackbarHostState.showSnackbar("Review deleted")
+                                    }
+                                },
+                            )
+                        }
+
+                        composable(AppRoutes.TRANSCRIBE) {
+                            TranscribeScreen(
+                                onShowMessage = { msg ->
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(msg)
                                     }
                                 },
                             )

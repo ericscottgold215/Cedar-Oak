@@ -1,5 +1,9 @@
 package com.example.ui.components
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -19,7 +23,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -37,6 +43,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -46,11 +53,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import com.example.R
+import com.example.audio.LiveSpeechHelper
 import com.example.model.PairingReview
 import com.example.ui.theme.StarGold
 import java.text.SimpleDateFormat
@@ -407,11 +419,49 @@ fun RatingComposerSheet(
     onDismiss: () -> Unit,
     onSubmit: (rating: Int, reviewText: String, reviewerName: String) -> Unit,
 ) {
+    val context = LocalContext.current
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var selectedRating by remember(existingReview) { mutableIntStateOf(existingReview?.rating ?: 5) }
     var reviewText by remember(existingReview) { mutableStateOf(existingReview?.reviewText ?: "") }
     var reviewerName by remember(existingReview, defaultReviewerName) {
         mutableStateOf(existingReview?.reviewerName ?: defaultReviewerName)
+    }
+    var isDictating by remember { mutableStateOf(false) }
+    var dictationHint by remember { mutableStateOf<String?>(null) }
+
+    val speechHelper = remember(context) {
+        LiveSpeechHelper(
+            context = context,
+            onPartialText = { partial ->
+                dictationHint = "Listening: $partial"
+            },
+            onFinalText = { spoken ->
+                val merged = if (reviewText.isBlank()) spoken else "${reviewText.trim()} $spoken"
+                reviewText = merged.take(240)
+                dictationHint = null
+            },
+            onErrorMessage = { err ->
+                dictationHint = err
+            },
+            onStateChanged = { listening ->
+                isDictating = listening
+            },
+        )
+    }
+
+    DisposableEffect(speechHelper) {
+        onDispose { speechHelper.destroy() }
+    }
+
+    val micLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) {
+            dictationHint = null
+            speechHelper.startListening()
+        } else {
+            dictationHint = "Microphone permission is needed to dictate notes."
+        }
     }
 
     ModalBottomSheet(
@@ -459,10 +509,40 @@ fun RatingComposerSheet(
                 onValueChange = { if (it.length <= 240) reviewText = it },
                 label = { Text("Short Review (Optional)") },
                 placeholder = { Text("How did the draw, body, and drink finish harmonize?") },
+                trailingIcon = {
+                    if (speechHelper.isAvailable()) {
+                        IconButton(
+                            onClick = {
+                                if (isDictating) {
+                                    speechHelper.stopListening()
+                                } else {
+                                    val granted = ContextCompat.checkSelfPermission(
+                                        context,
+                                        Manifest.permission.RECORD_AUDIO,
+                                    ) == PackageManager.PERMISSION_GRANTED
+                                    if (granted) {
+                                        speechHelper.startListening()
+                                    } else {
+                                        micLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .minimumInteractiveComponentSize()
+                                .testTag("dictate_review_button"),
+                        ) {
+                            Icon(
+                                imageVector = if (isDictating) Icons.Filled.Stop else Icons.Filled.Mic,
+                                contentDescription = stringResource(R.string.cd_mic_dictate),
+                                tint = if (isDictating) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                    }
+                },
                 minLines = 3,
                 maxLines = 4,
                 supportingText = {
-                    Text("${reviewText.length} / 240")
+                    Text(dictationHint ?: "${reviewText.length} / 240")
                 },
                 modifier = Modifier
                     .fillMaxWidth()

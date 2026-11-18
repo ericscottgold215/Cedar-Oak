@@ -318,6 +318,86 @@ object PairingCatalog {
             "Cinnamon-spiced Mexican cane coffee amplifies the 1990 Anniversary's San Andrés cocoa and molasses.",
             "Serve hot in an earthenware mug.",
         ),
+        CuratedPairing(
+            "padron_family_reserve_45", "cask_strength_bourbon", 98, "Uncut Barrel & Maduro",
+            "High-proof charred stave caramel and dark cherry wrap effortlessly around 10-year aged Estelí dark fudge and pepper.",
+            "Pour 1.5 oz neat with two drops of spring water.",
+        ),
+        CuratedPairing(
+            "perdomo_double_aged_maduro", "port_finished_bourbon", 96, "Oak & Berry Velvet",
+            "Ruby Port blackberry jam mirrors the 12-year bourbon-barrel Maduro's dark cocoa and sweet charred white oak.",
+            "Sip neat at 65°F in a Glencairn.",
+        ),
+        CuratedPairing(
+            "fuente_don_carlos_no2", "highland_scotch_18", 97, "Cameroon & Oloroso",
+            "Seville orange marmalade and walnut oak elevate Don Carlos's roasted almond and sweet cedar finish.",
+            "Pour neat in a copita alongside the tapered torpedo.",
+        ),
+        CuratedPairing(
+            "foundation_metapa_maduro", "extra_anejo_tequila", 97, "Agave & Sumatra Cacao",
+            "Oak-rested blue agave caramel and cinnamon amplify Metapa's Sumatra dark cacao and black cherry nuances.",
+            "Sip slowly neat at room temperature.",
+        ),
+        CuratedPairing(
+            "casa_turrent_1880_oscuro", "demerara_navy_rum", 96, "Molasses & Tuxtla Earth",
+            "Wooden-still blackstrap treacle and clove smooth Tuxtla mineral earth into rich Mexican dark chocolate.",
+            "Serve neat in a warm snifter.",
+        ),
+        CuratedPairing(
+            "selected_atabey_divinos", "vsop_cognac", 98, "Cedar Incense & Apricot",
+            "Five-year cedar-aged Costa Rican cream melts seamlessly into Fine Champagne apricot blossom and Limousin oak.",
+            "Pour 1.5 oz in a tulip glass.",
+        ),
+        CuratedPairing(
+            "my_father_el_centurion_h2k", "vieux_carre", 96, "Spice & Herbal Honey",
+            "Rye pepper and cognac raisin framed by herbal Bénédictine balance El Centurión's Habano 2000 baking spice.",
+            "Stir over a large crystal ice sphere.",
+        ),
+        CuratedPairing(
+            "crowned_heads_four_kicks", "sazerac_cocktail", 95, "Rye & Anise Snap",
+            "Chilled rye bitters and star anise cut cleanly across Ecuadorian Habano cedar and baking spice.",
+            "Serve neat in a chilled rocks glass.",
+        ),
+        CuratedPairing(
+            "por_larranaga_petit_corona", "madeira_malmsey_15", 97, "Caramel & Madeira Elegance",
+            "Sun-warmed Malmsey Madeira's burnt sugar, candied walnut, and crisp acidity harmonize brilliantly with Por Larrañaga's signature caramel cedar.",
+            "Serve lightly chilled at 56°F in a tulip wine glass alongside a slow draw.",
+        ),
+        CuratedPairing(
+            "ramon_allones_specially_selected", "indian_single_malt_sherry", 97, "Sherry Oak & Cuban Fig",
+            "Vibrant tropical-aged Oloroso single malt unlocks deep dried fig, cocoa nibs, and spiced floral cedar in the classic RASS Robusto.",
+            "Pour neat at 64°F in a Glencairn; swirl gently to open raisin and spice aromatics.",
+        ),
+        CuratedPairing(
+            "casdagli_traditional_cotton_tail", "lowland_triple_malt", 96, "Botanical Blossom Harmony",
+            "Triple-distilled Scottish orchard fruit and honeysuckle cradle Casdagli's delicate Ecuadorian Cotui cedar and almond silkiness.",
+            "Serve neat at room temperature to preserve delicate citrus and floral layers.",
+        ),
+        CuratedPairing(
+            "patina_maduro_toro", "american_single_malt_oak", 96, "Malted Char & Broadleaf",
+            "Roasted chocolate barley malt and new charred oak amplify Patina Maduro's dense dark cocoa, black cherry, and espresso core.",
+            "Pour over one crystal sphere to unlock sweet toasted-grain undertones.",
+        ),
+        CuratedPairing(
+            "espinosa_laranja_corona", "finished_rum_cask_rye", 96, "Orange Blossom & Rum Rye",
+            "Molasses-cask rye spice locks directly into Laranja's vibrant blood-orange zest, toasted cedar, and creamy café crema.",
+            "Serve neat in a rocks glass; notice how citrus oils brighten every puff.",
+        ),
+        CuratedPairing(
+            "curivari_buenaventura_p600", "barbados_xo_rum", 95, "Cubanesque Cane & Cedar",
+            "Dry charred bourbon-cask Barbados rum balances coconut, roasted vanilla, and toasted nut seamlessly with Buenaventura's Cuban-seed earth.",
+            "Sip neat in a tulip snifter at 66°F.",
+        ),
+        CuratedPairing(
+            "juan_lopez_seleccion_no2", "hors_dage_cognac", 97, "Rancio & Seville Citrus",
+            "Decades-aged Grande Champagne rancio oak and candied tangerine lift Juan López's bright citrus blossom and sweet milk-chocolate earth.",
+            "Hand-warm a small brandy tulip glass slowly throughout the Robusto session.",
+        ),
+        CuratedPairing(
+            "dapper_cubo_maduro", "black_russian_espresso", 95, "Velvet Roast Contrast",
+            "Chilled coffee liqueur over crystal ice cushions Cubo Maduro's chocolate fudge, cedar, and lively Nicaraguan pepper.",
+            "Stir over a large ice cube and take short sips between draws.",
+        ),
     )
 
     fun cigarById(id: String): Cigar? = cigarMap[id]

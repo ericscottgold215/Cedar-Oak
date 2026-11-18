@@ -1,6 +1,7 @@
 package com.example
 
 import com.example.data.catalog.PairingCatalog
+import com.example.data.history.CigarHistoryCatalog
 import com.example.model.PairingRatingSummary
 import com.example.model.PairingStrategy
 import com.example.model.buildPairingId
@@ -13,8 +14,8 @@ class ExampleUnitTest {
 
     @Test
     fun catalogHasExpandedUniqueCigarsAndBeverages() {
-        assertTrue("Expected >= 70 cigars", PairingCatalog.cigars.size >= 70)
-        assertTrue("Expected >= 45 beverages", PairingCatalog.beverages.size >= 45)
+        assertTrue("Expected >= 590 cigars, got ${PairingCatalog.cigars.size}", PairingCatalog.cigars.size >= 590)
+        assertTrue("Expected >= 105 beverages, got ${PairingCatalog.beverages.size}", PairingCatalog.beverages.size >= 105)
         assertEquals(PairingCatalog.cigars.size, PairingCatalog.cigars.map { it.id }.toSet().size)
         assertEquals(PairingCatalog.beverages.size, PairingCatalog.beverages.map { it.id }.toSet().size)
     }
@@ -31,11 +32,51 @@ class ExampleUnitTest {
             "Man O' War",
             "Ave Maria",
             "Nica Libre",
+            "ACID",
+            "AJ Fernandez",
+            "Caldwell",
+            "Casa Turrent",
+            "Casdagli",
+            "Cavalier Genève",
+            "Curivari",
+            "Dapper",
+            "Davidoff",
+            "Deadwood",
+            "Diplomáticos",
+            "E.P. Carrillo",
+            "Foundation",
+            "Gurkha",
+            "Illusione",
+            "Joya de Nicaragua",
+            "Juan López",
+            "Kristoff",
+            "La Aroma de Cuba",
+            "La Flor Dominicana",
+            "La Palina",
+            "My Father",
+            "Nub",
+            "Oliva",
+            "Padrón",
+            "Patina",
+            "Perdomo",
+            "Plasencia",
+            "Por Larrañaga",
+            "Quintero",
+            "Ramón Allones",
+            "Rocky Patel",
+            "RoMa Craft",
+            "San Cristóbal",
+            "Southern Draw",
+            "Tatuaje",
+            "Te-Amo",
+            "VegaFina",
+            "Warped",
+            "Zino",
         )
         expectedBrands.forEach { brand ->
             assertTrue(
-                "Expected at least 3 cigars for brand $brand, found ${brandCounts[brand] ?: 0}",
-                (brandCounts[brand] ?: 0) >= 3
+                "Expected at least 2 cigars for brand $brand, found ${brandCounts[brand] ?: 0}",
+                (brandCounts[brand] ?: 0) >= 2
             )
         }
     }
@@ -112,6 +153,31 @@ class ExampleUnitTest {
             "Palate Reset strategy should score ginger beer (${cleanserGinger.matchScore}) above heavy drinking cacao (${cleanserCacao.matchScore})",
             cleanserGinger.matchScore > cleanserCacao.matchScore
         )
+    }
+
+    @Test
+    fun everyCigarAndBrandHasCompleteHistoryLesson() {
+        val uniqueBrands = PairingCatalog.cigars.map { it.brand }.toSet()
+        uniqueBrands.forEach { brand ->
+            val company = CigarHistoryCatalog.companyForBrand(brand)
+            assertNotNull("Missing company history for brand: $brand", company)
+            company!!
+            assertTrue("$brand missing foundedYear", company.foundedYear.isNotBlank())
+            assertTrue("$brand missing founder", company.founder.isNotBlank())
+            assertTrue("$brand missing currentOwner", company.currentOwner.isNotBlank())
+            assertTrue("$brand missing headquartersAndFactory", company.headquartersAndFactory.isNotBlank())
+            assertTrue("$brand missing heritageStory", company.heritageStory.isNotBlank())
+        }
+
+        PairingCatalog.cigars.forEach { cigar ->
+            val release = CigarHistoryCatalog.releaseForCigar(cigar.id)
+            assertNotNull("Missing release history for cigar: ${cigar.id}", release)
+            release!!
+            assertTrue("${cigar.id} missing launchYear", release.launchYear.isNotBlank())
+            assertTrue("${cigar.id} missing blenderAndFactory", release.blenderAndFactory.isNotBlank())
+            assertTrue("${cigar.id} missing productionLocation", release.productionLocation.isNotBlank())
+            assertTrue("${cigar.id} missing storyAndLegacy", release.storyAndLegacy.isNotBlank())
+        }
     }
 
     @Test

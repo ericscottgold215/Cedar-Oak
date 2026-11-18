@@ -3,7 +3,9 @@ package com.example
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.example.audio.AudioFileReader
 import com.example.data.local.AppDatabase
+import com.example.data.repository.AudioTranscriptionRepository
 import com.example.data.repository.PairingReviewRepository
 import com.example.model.buildPairingId
 import kotlinx.coroutines.flow.first
@@ -94,5 +96,35 @@ class ExampleRobolectricTest {
 
         val otherSummary = repository.observeRatingSummaries().first()["nonexistent__pair"]
         assertNull(otherSummary)
+    }
+
+    @Test
+    fun `save and delete audio transcriptions in Room`() = runBlocking {
+        val txRepo = AudioTranscriptionRepository(db.audioTranscriptionDao())
+        val savedId = txRepo.saveTranscription(
+            title = "Padron 3000 Tasting Note",
+            sourceLabel = "Voice Memo (00:18)",
+            durationSeconds = 18,
+            styleLabel = "Tasting Memo",
+            transcriptText = "Warm walnut, cedar spice, and espresso pairing cleanly with bourbon.",
+        )
+
+        val list = txRepo.observeTranscriptions().first()
+        assertEquals(1, list.size)
+        assertEquals("Padron 3000 Tasting Note", list.first().title)
+        assertEquals(18, list.first().durationSeconds)
+
+        txRepo.deleteTranscription(savedId)
+        val afterDelete = txRepo.observeTranscriptions().first()
+        assertEquals(0, afterDelete.size)
+    }
+
+    @Test
+    fun `normalizeAudioMime infers common audio container formats`() {
+        assertEquals("audio/mpeg", AudioFileReader.normalizeAudioMime("", "tasting_session.mp3"))
+        assertEquals("audio/wav", AudioFileReader.normalizeAudioMime("application/octet-stream", "clip.wav"))
+        assertEquals("audio/ogg", AudioFileReader.normalizeAudioMime("", "voice.ogg"))
+        assertEquals("audio/mp4", AudioFileReader.normalizeAudioMime("", "memo.m4a"))
+        assertEquals("audio/flac", AudioFileReader.normalizeAudioMime("audio/flac", "master.flac"))
     }
 }

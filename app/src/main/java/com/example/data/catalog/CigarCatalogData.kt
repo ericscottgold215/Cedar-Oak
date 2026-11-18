@@ -1,5 +1,6 @@
 package com.example.data.catalog
 
+import com.example.data.catalog.pdf.PdfCatalogData
 import com.example.model.Cigar
 import com.example.model.FlavorAxes
 import com.example.model.StrengthLevel
@@ -7,7 +8,12 @@ import com.example.model.WrapperShade
 
 object CigarCatalogData {
     val cigars: List<Cigar> =
-        mildAndMediumCigars() + mediumFullAndFullCigars() + CigarBrandExpansions.cigars
+        mildAndMediumCigars() +
+            mediumFullAndFullCigars() +
+            CigarBrandExpansions.cigars +
+            CigarMoreExpansions.cigars +
+            CigarBoutiqueVault.cigars +
+            PdfCatalogData.cigars
 
     private fun mildAndMediumCigars(): List<Cigar> = listOf(
         Cigar(

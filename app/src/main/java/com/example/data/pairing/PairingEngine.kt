@@ -389,6 +389,65 @@ object PairingEngine {
             score += 6
         }
 
+        // Infused / coffee / sweet-cap / flavored chemistry
+        val isSweetOrInfused = "infused" in wrapperLower || "sweet" in wrapperLower ||
+            "flavored" in wrapperLower || "rum" in wrapperLower || "berry" in wrapperLower ||
+            "infused" in summaryLower || "sweet cap" in summaryLower || "sweet-tip" in summaryLower ||
+            cigar.brand in setOf("ACID", "Deadwood", "Java", "Tatiana", "Trader Jack's", "Swisher Sweets", "White Owl", "Dark Desires")
+        if (isSweetOrInfused) {
+            when (beverage.category) {
+                BeverageCategory.COFFEE, BeverageCategory.CACAO, BeverageCategory.RUM -> {
+                    score += 14
+                    rule = "Aromatic infusion match: sweet cap and botanical oils harmonize with creamy roast or cane rum"
+                }
+                BeverageCategory.CRAFT_SODA, BeverageCategory.ZERO_PROOF_ELIXIRS -> {
+                    score += 12
+                    rule = "Botanical fizz & sweet aromatics elevate infused tobacco notes cleanly"
+                }
+                BeverageCategory.WHISKEY -> {
+                    if ("islay" in bevText || "peat" in bevText) score -= 10
+                }
+                else -> Unit
+            }
+        }
+
+        // Candela herbal / green-tea synergy
+        if ("candela" in wrapperLower) {
+            when (beverage.category) {
+                BeverageCategory.TEA, BeverageCategory.CRAFT_SODA, BeverageCategory.ZERO_PROOF_ELIXIRS -> {
+                    score += 14
+                    rule = "Candela & herbal lift: bright chlorophyll grassiness mirrors crisp botanical tea and tonic"
+                }
+                BeverageCategory.WINE -> {
+                    if ("champagne" in bevText || "prosecco" in bevText || "sauvignon" in bevText || "chablis" in bevText || "white" in bevText) {
+                        score += 14
+                        rule = "Crisp white wine acidity refreshes sweet grassy candela leaf"
+                    }
+                }
+                else -> Unit
+            }
+        }
+
+        // Fire-cured Kentucky / Italian cheroot affinity
+        if ("kentucky" in wrapperLower || "fire-cured" in wrapperLower || "fire-cured" in summaryLower) {
+            when (beverage.category) {
+                BeverageCategory.WHISKEY -> {
+                    if ("bourbon" in bevText || "rye" in bevText || "islay" in bevText || "peat" in bevText) {
+                        score += 16
+                        rule = "Fire-cured hickory smoke locks seamlessly onto charred bourbon oak or Islay peat"
+                    }
+                }
+                BeverageCategory.COFFEE -> {
+                    score += 14
+                    rule = "Dark roast espresso balances rustic Italian campfire tobacco smoke"
+                }
+                BeverageCategory.BEER -> {
+                    if ("stout" in bevText || "porter" in bevText) score += 14
+                }
+                else -> Unit
+            }
+        }
+
         return score.coerceIn(54, 99) to rule
     }
 

@@ -5,6 +5,7 @@
     <string name="nav_cigars">Cigars</string>
     <string name="nav_drinks">Drinks</string>
     <string name="nav_synergy">Synergy</string>
+    <string name="nav_transcribe">Transcribe</string>
     <string name="cd_back">Navigate back</string>
     <string name="cd_lounge_hero">Luxury cedar table with a hand-rolled cigar, amber spirit, and espresso cup</string>
     <string name="cd_cigar_wrappers">Artisanal cigars arranged by wrapper shade on Spanish cedar</string>
@@ -18,4 +19,22 @@
     <string name="action_submit_review">Save Rating &amp; Review</string>
     <string name="hint_review_notes">Share tasting impressions, draw balance, or finish notes (optional)</string>
     <string name="hint_reviewer_name">Your display name</string>
+    <string name="transcribe_title">Audio Transcriber</string>
+    <string name="transcribe_subtitle">Record voice memos, import audio files, or dictate tasting notes live.</string>
+    <string name="transcribe_action_record">Start Recording</string>
+    <string name="transcribe_action_stop_record">Stop Recording</string>
+    <string name="transcribe_action_pick_file">Choose Audio File</string>
+    <string name="transcribe_action_transcribe">Transcribe Audio</string>
+    <string name="transcribe_action_copy">Copy Text</string>
+    <string name="transcribe_action_save">Save Note</string>
+    <string name="transcribe_action_dictate">Dictate Note</string>
+    <string name="transcribe_action_stop_dictate">Stop Listening</string>
+    <string name="transcribe_permission_rationale">Microphone access lets you record voice memos and dictate cigar tasting notes.</string>
+    <string name="transcribe_grant_permission">Allow Microphone</string>
+    <string name="transcribe_empty_history">No saved transcripts yet. Record a voice memo or choose an audio file above.</string>
+    <string name="cd_mic_dictate">Dictate review with microphone</string>
+    <string name="cd_play_audio">Play audio preview</string>
+    <string name="cd_pause_audio">Pause audio preview</string>
+    <string name="cd_copy_transcript">Copy transcript to clipboard</string>
+    <string name="cd_delete_transcript">Delete saved transcript</string>
 </resources>

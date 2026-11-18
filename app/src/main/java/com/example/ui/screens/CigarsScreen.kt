@@ -46,9 +46,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.R
 import com.example.data.catalog.PairingCatalog
+import com.example.data.history.CigarHistoryCatalog
 import com.example.model.Cigar
 import com.example.model.StrengthLevel
 import com.example.model.WrapperShade
+import com.example.ui.components.BrandHeritageBannerCard
 import com.example.ui.components.FlavorNoteTag
 import com.example.ui.components.StrengthDotsMeter
 import com.example.ui.components.WrapperSwatchPill
@@ -123,7 +125,7 @@ fun CigarsScreen(
                         color = Color(0xFFF5ECE4),
                     )
                     Text(
-                        text = "Cuban, Nicaraguan, Dominican & Honduran blends across ${allBrands.size} brands.",
+                        text = "Cuban, Nicaraguan, Dominican, Honduran & boutique blends across ${allBrands.size} brands.",
                         style = MaterialTheme.typography.bodySmall,
                         color = Color(0xFFD8C9BC),
                     )
@@ -215,6 +217,13 @@ fun CigarsScreen(
             }
         }
 
+        val activeBrandHistory = brandFilter?.let { CigarHistoryCatalog.companyForBrand(it) }
+        if (activeBrandHistory != null) {
+            item(key = "brand_heritage_${activeBrandHistory.brand}") {
+                BrandHeritageBannerCard(companyHistory = activeBrandHistory)
+            }
+        }
+
         item {
             Text(
                 text = "Showing ${filteredCigars.size} of ${PairingCatalog.cigars.size} cigars",
@@ -265,8 +274,8 @@ private fun CigarListCard(
     cigar: Cigar,
     onClick: () -> Unit,
 ) {
-    val pairingCount = remember(cigar.id) {
-        PairingCatalog.curatedPairings.count { it.cigarId == cigar.id }
+    val releaseHistory = remember(cigar.id) {
+        CigarHistoryCatalog.releaseForCigar(cigar.id)
     }
     Card(
         modifier = Modifier
@@ -330,14 +339,16 @@ private fun CigarListCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                val launchNote = releaseHistory?.let { "Launched ${it.launchYear} · " } ?: ""
                 Text(
-                    text = "$pairingCount curated pairings (Spirits & Zero-Proof)",
+                    text = "${launchNote}History & 10 Pairings",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier.weight(1f),
                 )
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = "View cigar profile and pairings",
+                    contentDescription = "View cigar profile, history, and pairings",
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }

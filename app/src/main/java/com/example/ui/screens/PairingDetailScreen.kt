@@ -43,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.R
 import com.example.data.catalog.PairingCatalog
+import com.example.data.history.CigarHistoryCatalog
 import com.example.model.PairingRatingSummary
 import com.example.model.PairingReview
 import com.example.model.buildPairingId
@@ -51,6 +52,7 @@ import com.example.ui.components.BeverageProofBadge
 import com.example.ui.components.FlavorNoteTag
 import com.example.ui.components.FlavorRadarChart
 import com.example.ui.components.MatchScorePill
+import com.example.ui.components.PairingCigarHistoryPreviewCard
 import com.example.ui.components.PairingLogicBreakdownCard
 import com.example.ui.components.RatingBreakdownCard
 import com.example.ui.components.ReviewItemCard
@@ -78,6 +80,8 @@ fun PairingDetailScreen(
         return
     }
 
+    val releaseHistory = remember(cigarId) { CigarHistoryCatalog.releaseForCigar(cigarId) }
+    val companyHistory = remember(cigar.brand) { CigarHistoryCatalog.companyForBrand(cigar.brand) }
     val summary = ratingsByPairingId[pairingId]
     val suggestion = remember(cigar, beverage, summary) {
         PairingCatalog.evaluatePairing(cigar, beverage, summary)
@@ -277,6 +281,17 @@ fun PairingDetailScreen(
             suggestion.breakdown?.let { breakdown ->
                 item {
                     PairingLogicBreakdownCard(breakdown = breakdown)
+                }
+            }
+
+            if (releaseHistory != null || companyHistory != null) {
+                item {
+                    PairingCigarHistoryPreviewCard(
+                        cigar = cigar,
+                        releaseHistory = releaseHistory,
+                        companyHistory = companyHistory,
+                        onOpenCigarHistory = { onOpenCigar(cigar.id) },
+                    )
                 }
             }
 

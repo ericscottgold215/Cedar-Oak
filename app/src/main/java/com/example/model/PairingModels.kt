@@ -187,4 +187,32 @@ data class PairingReview(
     val createdAt: Long,
 )
 
+data class CigarCompanyHistory(
+    val brand: String,
+    val foundedYear: String,
+    val founder: String,
+    val currentOwner: String,
+    val headquartersAndFactory: String,
+    val heritageStory: String,
+)
+
+data class CigarReleaseHistory(
+    val cigarId: String,
+    val launchYear: String,
+    val blenderAndFactory: String,
+    val productionLocation: String,
+    val storyAndLegacy: String,
+)
+
+data class AudioTranscription(
+    val id: Long = 0L,
+    val title: String,
+    val sourceLabel: String,
+    val durationSeconds: Int,
+    val styleLabel: String,
+    val transcriptText: String,
+    val createdAt: Long,
+)
+
 fun buildPairingId(cigarId: String, beverageId: String): String = "${cigarId}__${beverageId}"
+

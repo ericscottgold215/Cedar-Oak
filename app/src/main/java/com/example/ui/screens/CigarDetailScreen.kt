@@ -34,7 +34,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.R
 import com.example.data.catalog.PairingCatalog
+import com.example.data.history.CigarHistoryCatalog
 import com.example.model.PairingRatingSummary
+import com.example.ui.components.CigarHistoryLessonCard
 import com.example.ui.components.FlavorNoteTag
 import com.example.ui.components.FlavorRadarChart
 import com.example.ui.components.PairingSuggestionCard
@@ -51,6 +53,10 @@ fun CigarDetailScreen(
     onQuickRate: (cigarId: String, beverageId: String) -> Unit,
 ) {
     val cigar = remember(cigarId) { PairingCatalog.cigarById(cigarId) }
+    val releaseHistory = remember(cigarId) { CigarHistoryCatalog.releaseForCigar(cigarId) }
+    val companyHistory = remember(cigar?.brand) {
+        cigar?.let { CigarHistoryCatalog.companyForBrand(it.brand) }
+    }
     val allPairings = remember(cigarId, ratingsByPairingId) {
         PairingCatalog.pairingsForCigar(cigarId, ratingsByPairingId)
     }
@@ -195,6 +201,16 @@ fun CigarDetailScreen(
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }
+                }
+            }
+
+            if (releaseHistory != null || companyHistory != null) {
+                item {
+                    CigarHistoryLessonCard(
+                        cigar = cigar,
+                        releaseHistory = releaseHistory,
+                        companyHistory = companyHistory,
+                    )
                 }
             }
 
